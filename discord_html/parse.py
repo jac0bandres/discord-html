@@ -12,28 +12,35 @@ def get_config(config_file="config.yaml"):
     except FileNotFoundError:
         raise FileNotFoundError(f"Configuration file '{full_path}' not found.")
 
-def md_to_html(content: str) -> str:
+def md_to_html(content: str, config: dict = get_config()) -> str:
     """
     Convert Discord-style markdown to HTML.
     This is a simplified version and may not cover all markdown features.
     """
-    # Convert bold text
-    content = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', content)
+    print(content)
+    for r in config["regex"]:
+        content = re.sub(rf'{r['pattern']}', rf'{r['match']}', content)
+
+    print(content)
+    for r in config["replace"]:
+        content.replace(r['md'], r['html'])
+ 
     
-    # Convert italic text
-    content = re.sub(r'\*(.*?)\*', r'<em>\1</em>', content)
-    
-    # Convert inline code
-    content = re.sub(r'``(.*?)``', r'<code>\1</code>', content)
-    
-    # Convert links
-    content = re.sub(r'\[(.*?)\]\((.*?)\)', r'<a href="\2">\1</a>', content)
-    
-    # Convert newlines to <br>
-    content = content.replace('\n', '<br>')
-    
+    print(content)
+    content = inject(content=content, config=config)
+
+    print(content)
     return content
 
-def inject(content: str, config: yaml.YAMLObject) -> str:
-    for tag in config['tags']:
-        content = re.sub(r'\<\')
+def inject(content: str, config: dict) -> str:
+    for tag_config in config['tags']:
+        tag_name = tag_config['tag']
+        attrs = tag_config.get('attrs', {})
+        attr_str = ' '.join(f'{k}="{v}"' for k, v in attrs.items())
+        pattern = rf'<{tag_name}(\s[^>]*)?>'
+        def repl(match):
+            return f'<{tag_name} {attr_str}>'
+
+        content = re.sub(pattern, repl, content, flags=re.DOTALL)
+
+    return content
