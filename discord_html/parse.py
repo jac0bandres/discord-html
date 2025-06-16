@@ -1,4 +1,16 @@
 import re
+import yaml
+from pathlib import Path
+
+def get_config(config_file="config.yaml"):
+    base_path = Path(__file__).resolve().parent
+    full_path = base_path / config_file
+
+    try:
+        with open(full_path, 'r') as file:
+            return yaml.safe_load(file)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Configuration file '{full_path}' not found.")
 
 def md_to_html(content: str) -> str:
     """
@@ -20,4 +32,8 @@ def md_to_html(content: str) -> str:
     # Convert newlines to <br>
     content = content.replace('\n', '<br>')
     
-    return f"<p>{content}</p>"
+    return content
+
+def inject(content: str, config: yaml.YAMLObject) -> str:
+    for tag in config['tags']:
+        content = re.sub(r'\<\')

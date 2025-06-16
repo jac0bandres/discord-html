@@ -15,33 +15,39 @@ args:
   parse:
     - name: "--html"
       aliases: ["-h"]
-      type: "bool"
-      required: false
+      type: "bool" 
       description: "Parse MD to HTML"
       function: "md_to_html"
+      sequence: 1
+
     - name: "--md"
       aliases: ["-m"]
       type: "bool"
-      required: false
       description: "Parse HTML to MD"
       function: "html_to_md"
-    - name: "--message-id"
+      sequence: 1
+
+    - name: "--ids"
       aliases: ["-i"]
-      type: "string"
-      required: true
+      type: "array"
       description: "Message ID to parse content from. If none is provided, parses last message in the channel. If command is called in a reply, parses the reply."
+      sequence: 0
+
     - name: "--upload"
       aliases: ["-u"]
       type: "bool"
-      required: false
       description: "Upload parsed content in a Discord reply. Discord file size limits apply. Filename defaults to {message ID}.html"
+      function: "upload_content"
+      sequence: 3
+
     - name: "--filename"
       aliases: ["-f"]
       type: "string"
-      required: false
       description: "Parsed content filename, required for webhook."
+      sequence: 2
+
     - name: "--webhook"
       aliases: ["-w"]
       type: "string"
-      required: false
       description: "Post content to a Webhook URL in JSON with 'content' as key and the parsed content as value, filename command is required" 
+      sequence: 3

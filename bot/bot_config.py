@@ -25,30 +25,50 @@ def get_flags(flag_definitions: list[dict]):
     return flag_map
 
 def parse_input(flag_map: dict, input_str: str):
-    print(flag_map)
-    split_flags = input_str.strip().split()
-    args = {}
+    split_input = input_str.strip().split()
+    flags = []
+    args = []
 
-    for f in split_flags:
+    for s in split_input:
+        if s.startswith("-"): 
+            flags.append(s)
+
+    for index, f in enumerate(flags):
         flag = flag_map[f]
 
         if flag is None:
             raise ValueError(f"Unknown argument {f}")
 
         if flag['type'] == 'bool':
-            args[flag['name']] = True
+            args.append({ 'flag': flag })
             continue
 
         if flag['type'] == 'string':
-            arg = split_flags[split_flags.index(f) + 1] if split_flags.index(f) + 1 < len(split_flags) else None
+            arg = split_input[index + 1] if index + 1 < len(split_input) else None
             if arg is None or arg.startswith('-'):
                 raise ValueError(f'''
                 Missing value for argument: {f}\n
                 {flag['name']}\t{flag['aliases']}\n
-                {flag['required']}\n
                 {flag['description']}\n
                 ''')
 
-            args[flag['name']] = arg
+            args.append({
+                'flag': flag
+            })
+
+        if flag['type'] == 'array':
+            next = 0
+            while True:
+                if next+1 == len(split_input): 
+                    break
+                if split_input[next+1].startswith('--'):
+                    break
+
+                next += 1
+
+            args.append({
+                'flag': flag,
+                'params': split_input[index+1:next+1]
+            })
 
     return args

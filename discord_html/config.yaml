@@ -1,0 +1,30 @@
+
+tags:
+  bold:
+    - tag: "h1"
+      attr:
+        classname: ""
+        id: ""
+      pattern: "\*\*(.*?)\*\*"
+      match: "<strong>\1</strong>"
+
+
+  italics:
+    - tag: "em"
+      attr:
+        classname: ""
+        id: ""
+      pattern: "\*(.*?)\*"
+      match: "<em>\1</em>"
+
+  links:
+    - tag: ""
+      attr:
+        classname: ""
+        id: ""
+      pattern: "\[(.*?)\]\((.*?)\)"
+      match: '<a href="\2">\1</a>'
+
+  inline_code:
+    - tag: "code"
+      pattern: "``(.*?)``"
