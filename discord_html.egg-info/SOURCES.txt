@@ -1,0 +1,9 @@
+README.md
+pyproject.toml
+./README.md
+discord_html/__init__.py
+discord_html/parse.py
+discord_html.egg-info/PKG-INFO
+discord_html.egg-info/SOURCES.txt
+discord_html.egg-info/dependency_links.txt
+discord_html.egg-info/top_level.txt

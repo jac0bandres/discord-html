@@ -1,4 +1,4 @@
-parse_command_name: parse
+command_name: parse
 command_prefix: "/"
 
 
@@ -6,30 +6,42 @@ command_prefix: "/"
 # channels:
 #   - channel_id: "1234567890"
 #
+
+default_args: "--html --upload"
+
+# Arguments are matched to aliases and functions. 
+# Do not change function values unless you plan on editing the parser.
 args:
-  - default_args: "--html --upload"
   parse:
     - name: "--html"
-      type: "string"
+      aliases: ["-h"]
+      type: "bool"
       required: false
       description: "Parse MD to HTML"
+      function: "md_to_html"
     - name: "--md"
-      type: "string"
+      aliases: ["-m"]
+      type: "bool"
       required: false
       description: "Parse HTML to MD"
+      function: "html_to_md"
     - name: "--message-id"
+      aliases: ["-i"]
       type: "string"
       required: true
       description: "Message ID to parse content from. If none is provided, parses last message in the channel. If command is called in a reply, parses the reply."
     - name: "--upload"
-      type: "string"
+      aliases: ["-u"]
+      type: "bool"
       required: false
       description: "Upload parsed content in a Discord reply. Discord file size limits apply. Filename defaults to {message ID}.html"
     - name: "--filename"
+      aliases: ["-f"]
       type: "string"
       required: false
       description: "Parsed content filename, required for webhook."
-    - name: "--webook"
+    - name: "--webhook"
+      aliases: ["-w"]
       type: "string"
       required: false
       description: "Post content to a Webhook URL in JSON with 'content' as key and the parsed content as value, filename command is required" 

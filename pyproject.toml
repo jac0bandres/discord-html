@@ -1,8 +1,8 @@
-[projet]
-name = "discord-html"
+[project]
+name = "discord_html"
 version = "0.1.0"
 description = "A parser that converts Discord-falvored markdown to HTML."
-readme = "../README.md"
+readme = "./README.md"
 requires-python = ">=3.8"
 authors = [
     { name = "Jacob Andres", email = "jacob@jacobandres.com" }
@@ -14,6 +14,10 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["discord_html", "discord_html.*"]
 
 [build-system]
 requires = ["setuptools>=61.0"]
