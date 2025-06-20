@@ -30,7 +30,7 @@ def md_to_html(content: str, config: dict = get_config()) -> str:
     content = inject(content=content, config=config)
 
     print(content)
-    return content
+    return f'<p>{content}</p>'
 
 def inject(content: str, config: dict) -> str:
     for tag_config in config['tags']:
